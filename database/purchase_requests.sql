@@ -1,0 +1,9 @@
+
+CREATE TABLE IF NOT EXISTS purchase_requests (
+    id SERIAL PRIMARY KEY,
+    book_id INTEGER NOT NULL REFERENCES books(id),
+    name VARCHAR(150) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(30) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
