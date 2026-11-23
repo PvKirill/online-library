@@ -12,13 +12,12 @@ function BookReader({ book, pages }: BookReaderProps) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
-    const [purchaseMessage, setPurchaseMessage] = useState("");   
+    const [purchaseMessage, setPurchaseMessage] = useState("");
+    const [submitting, setSubmitting] = useState(false);
 
     const isPaid = book.access === "paid";
     const freePageLimit = 20;
-
     const isLocked = isPaid && currentPage > freePageLimit;
-
     const totalPages = pages.length;
 
     function nextPage() {
@@ -33,48 +32,52 @@ function BookReader({ book, pages }: BookReaderProps) {
         }
     }
 
-    
-async function handlePurchase(event: FormEvent<HTMLFormElement>) {
-  event.preventDefault();
-  setPurchaseMessage("");
+    async function handlePurchase(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
 
-  try {
-    const response = await fetch(
-      "http://localhost:5000/api/purchase-requests",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          bookId: book.id,
-          name,
-          email,
-          phone,
-        }),
-      }
-    );
+        if (submitting) return;
 
-    const data = await response.json();
+        setPurchaseMessage("");
+        setSubmitting(true);
 
-    if (!response.ok) {
-      throw new Error(data.message || "Ошибка отправки заявки");
+        try {
+            const response = await fetch(
+                "http://localhost:5000/api/purchase-requests",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        bookId: book.id,
+                        name,
+                        email,
+                        phone,
+                    }),
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Ошибка отправки заявки");
+            }
+
+            setPurchaseMessage("Заявка успешно отправлена!");
+            setName("");
+            setEmail("");
+            setPhone("");
+        } catch (error) {
+            setPurchaseMessage(
+                error instanceof Error
+                    ? error.message
+                    : "Не удалось отправить заявку"
+            );
+        } finally {
+            setSubmitting(false);
+        }
     }
 
-    setPurchaseMessage("Заявка успешно отправлена!");
-
-    setName("");
-    setEmail("");
-    setPhone("");
-  } catch (error) {
-    setPurchaseMessage(
-      error instanceof Error
-        ? error.message
-        : "Не удалось отправить заявку"
-    );
-  }
-}
-    
     return (
         <div className="reader">
             <h2>📖 Читалка</h2>
@@ -89,11 +92,10 @@ async function handlePurchase(event: FormEvent<HTMLFormElement>) {
                         </p>
 
                         <form onSubmit={handlePurchase} className="purchase-form">
-
                             {purchaseMessage && (
-                                  <p>{purchaseMessage}</p>
-                                  )}
-                            
+                                <p>{purchaseMessage}</p>
+                            )}
+
                             <input
                                 type="text"
                                 placeholder="Ваше имя"
@@ -118,8 +120,12 @@ async function handlePurchase(event: FormEvent<HTMLFormElement>) {
                                 required
                             />
 
-                            <button type="submit" className="details-button">
-                                Отправить заявку
+                            <button
+                                type="submit"
+                                className="details-button"
+                                disabled={submitting}
+                            >
+                                {submitting ? "Отправка..." : "Отправить заявку"}
                             </button>
                         </form>
                     </div>

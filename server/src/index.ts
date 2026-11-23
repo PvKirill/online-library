@@ -9,10 +9,15 @@ import purchaseRequestsRouter from "./routes/purchaseRequests.js";
 import authRouter from "./routes/auth.js";
 import { authMiddleware } from "./middleware/authMiddleware.js";
 
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./swagger.js";
+
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(cors());
 app.use(express.json());

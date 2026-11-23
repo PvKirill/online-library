@@ -1,75 +1,145 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Онлайн-библиотека
 
-Currently, two official plugins are available:
+Веб-приложение для просмотра электронных книг, поиска произведений и отправки заявок на покупку платных книг.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Используемые технологии
 
-## React Compiler
+### Клиентская часть
+- React
+- TypeScript
+- Vite
+- React Router
+- CSS
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Серверная часть
+- Node.js
+- Express
+- TypeScript
+- PostgreSQL
+- JWT (авторизация)
+- bcrypt (хеширование паролей)
+- Swagger (документация API)
 
-## Expanding the ESLint configuration
+## Возможности приложения
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Пользователь
+- Просмотр каталога книг.
+- Поиск книг по названию и автору.
+- Фильтрация по категориям и типу доступа.
+- Просмотр подробной информации о книге.
+- Чтение бесплатных книг.
+- Бесплатный просмотр первых 20 страниц платных книг.
+- Отправка заявки на покупку платной книги.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Администратор
+- Авторизация в административной панели.
+- Просмотр заявок на покупку.
+- Добавление новых книг.
+- Редактирование информации о книгах.
+- Удаление книг.
+- Удаление заявок.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Структура проекта
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```text
+online-library/
+├── database/             # SQL-файлы базы данных
+├── server/               # Серверная часть
+│   └── src/
+│       ├── middleware/   # Промежуточное ПО
+│       ├── routes/       # API-маршруты
+│       ├── db.ts         # Подключение к БД
+│       ├── index.ts      # Запуск сервера
+│       └── swagger.ts    # Настройка Swagger
+├── src/                  # Клиентская часть
+│   ├── api/              # Работа с API
+│   ├── components/       # Компоненты
+│   ├── pages/            # Страницы приложения
+│   └── types/            # TypeScript-типы
+└── README.md
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+## Установка и запуск
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 1. Клонирование проекта
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+git clone <адрес-репозитория>
+cd online-library
 ```
+
+### 2. Установка зависимостей клиента
+
+```bash
+npm install
+```
+
+### 3. Установка зависимостей сервера
+
+```bash
+cd server
+npm install
+```
+
+### 4. Настройка базы данных
+
+Необходимо установить PostgreSQL и создать базу данных для приложения.
+
+Параметры подключения указываются в файле `.env` серверной части.
+
+Также необходимо настроить переменные окружения:
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=online_library
+DB_USER=postgres
+DB_PASSWORD=ваш_пароль
+JWT_SECRET=ваш_секретный_ключ
+PORT=5000
+```
+
+Названия переменных должны соответствовать настройкам подключения в проекте.
+
+Выполните SQL-скрипты из папки `database` для создания таблиц и начальных данных.
+
+### 5. Запуск сервера
+
+Из папки `server`:
+
+```bash
+npm run dev
+```
+
+Сервер будет доступен по адресу:
+
+http://localhost:5000
+
+### 6. Запуск клиента
+
+В отдельном терминале из корневой папки проекта:
+
+```bash
+npm run dev
+```
+
+Клиент будет доступен по адресу:
+
+http://localhost:5173
+
+## Документация API
+
+Документация REST API доступна через Swagger UI:
+
+http://localhost:5000/api-docs
+
+В документации представлены методы работы с книгами, заявками на покупку и авторизацией администратора.
+
+## Безопасность
+
+- Пароли администратора хранятся в базе данных в виде хешей.
+- Для авторизации используется JWT.
+- Защищённые административные API требуют Bearer-токен.
+- Токен хранится на клиенте в cookie.
+- Данные запросов к базе передаются через параметризованные SQL-запросы.

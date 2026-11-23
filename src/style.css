@@ -230,3 +230,125 @@ body {
 .purchase-form button {
   width: 100%;
 }
+
+
+/* Панель администратора */
+
+.admin-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.admin-container h1 {
+  font-size: 32px;
+  margin-bottom: 25px;
+  color: #263247;
+}
+
+.admin-container h2 {
+  margin-top: 30px;
+  margin-bottom: 20px;
+  font-size: 23px;
+}
+
+.admin-container form {
+  max-width: 550px;
+  background: white;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+.admin-container form div {
+  margin-bottom: 16px;
+}
+
+.admin-container label {
+  display: inline-block;
+  margin-bottom: 7px;
+  font-weight: bold;
+  color: #52627a;
+}
+
+.admin-container input,
+.admin-container textarea,
+.admin-container select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #dce2ec;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: Arial, sans-serif;
+}
+
+.admin-container textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.admin-container button {
+  border: none;
+  background: #3157c8;
+  color: white;
+  padding: 11px 17px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.admin-container button:hover {
+  background: #2444a5;
+}
+
+.admin-container button:disabled {
+  background: #aeb8ca;
+  cursor: not-allowed;
+}
+
+.admin-container table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+.admin-container th,
+.admin-container td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e8edf4;
+}
+
+.admin-container th {
+  background: #eaf0fb;
+  color: #263247;
+}
+
+.admin-container tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-container hr {
+  border: none;
+  border-top: 1px solid #dce2ec;
+  margin: 35px 0;
+}
+
+@media (max-width: 768px) {
+  .admin-container {
+    padding: 20px 12px;
+    overflow-x: auto;
+  }
+
+  .admin-container table {
+    min-width: 700px;
+  }
+
+  .admin-container form {
+    padding: 18px;
+  }
+}
